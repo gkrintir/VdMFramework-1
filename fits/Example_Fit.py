@@ -36,10 +36,10 @@ class Example_Fit(FitManager.FitProvider):
 
         return [functions, fit, graph]
 
-    def doPlot(self, graph, functions, fill):
+    def doPlot(self, graph, functions, fill, tempPath):
         # use doPlot1D function from vdmUtilities.py
         canvas =  r.TCanvas()
-        canvas = doPlot1D(graph, functions, fill)
+        canvas = doPlot1D(graph, functions, fill, tempPath)
         return canvas
 
     def writeParameters(self):
