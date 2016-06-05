@@ -1,0 +1,19 @@
+XC
+
+ 
+Now open input graphs file:  Fill4634_Nov192015/PCC/graphs/graphs_4634_noCorr.pkl
+[u'Fill4634_Nov192015/PCC/graphs/graphs_4634_noCorr.pkl', 'Fill4634_Nov192015/TrkVtx/graphs/graphs_4634_noCorr.pkl']
+ 
+Now open input graphs file:  Fill4634_Nov192015/TrkVtx/graphs/graphs_4634_noCorr.pkl
+[u'Fill4634_Nov192015/PCC/graphs/graphs_4634_noCorr.pkl', 'Fill4634_Nov192015/TrkVtx/graphs/graphs_4634_noCorr.pkl']
+[u'Fill4634_Nov192015/PCC/graphs/graphs_4634_noCorr.pkl', 'Fill4634_Nov192015/TrkVtx/graphs/graphs_4634_noCorr.pkl']
+------>>>>
+Now fitting BCID  644
+Traceback (most recent call last):
+  File "vdmDriverII.py", line 434, in <module>
+    resultsAll, table = doRunVdmFitter(Fill, FitName, InputGraphsFiles, OutputDir, PlotsTempPath, FitConfigInfo) 
+  File "/afs/cern.ch/user/g/gkrintir/github/VdMFramework_29Feb2016/vdmFitterII.py", line 115, in doRunVdmFitter
+    result = fitter.doFit(graphs[key], FitConfigInfo)
+  File "/afs/cern.ch/user/g/gkrintir/github/VdMFramework_29Feb2016/fits/Sim_PCCAndVtx_Fit.py", line 133, in doFit
+    StartSigma[1], StartPeak[1],StartFrac[1],0.
+TypeError: 'module' object is not callable

@@ -100,7 +100,7 @@ class SG_Fit(FitManager.FitProvider):
         return [functions, fit, graph]
 
 
-    def doPlot(self, graph, functions, fill):
+    def doPlot(self, graph, functions, fill, tempPath):
         
         canvas =  r.TCanvas()
         canvas = doPlot1D(graph, functions, fill)
