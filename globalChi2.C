@@ -1,21 +1,3 @@
-/*
-#include "Fit/Chi2FCN.h"
-
-class MyFCN: public ROOT::Fit::Chi2Function{
-  public:
-    MyFCN(const ROOT::Fit::BinData&  data, const ROOT::Fit::Chi2Function::IModelFunction&  func): ROOT::Fit::Chi2Function(data,func) {}
-    ~MyFCN(){}
-
-    private:
-    virtual double	DoEval(const double* x) const{
-        double ret = ROOT::Fit::Chi2Function::DoEval(x);
-        std::cout << "MyFCN::DoEval" << ret << endl;
-        assert(0);
-        return ret;
-    }
-};
-
-*/
 #include "Fit/Fitter.h"
 #include "Fit/BinData.h"
 #include "Fit/Chi2FCN.h"
@@ -29,26 +11,27 @@ class MyFCN: public ROOT::Fit::Chi2Function{
 
 
 // definition of shared parameter
-// background function 
-int iparB[5] = { 0,      // exp amplitude in B histo
-                 1,
-		 2,
-		 3,
-		 4// exp common parameter 
+// Luminometer1 (PCC) function 
+int iparPCC[6] = { 0, // Sigma
+                 1, // sigma_{1}/sigma_{2}
+		 2, // Amp
+		 3, // Frac
+		 4, // Mean
+		 5  // Const
 };
 
-// signal + background function 
-int iparSB[5] = { 5, // exp amplitude in S+B histo
-                  1, // exp common parameter
-                  6, // gaussian amplitude
-                  7, // gaussian mean
-                  8  // gaussian sigma
+//  Luminometer2 (TrkVtx) function 
+int iparTrkVtx[5] = { 0, // Sigma (common parameter)
+                  1, // sigma_{1}/sigma_{2} (common parameter)
+                  6, // Amp
+                  3, // Frac (common parameter)
+                  7  // Mean
 };
 
-class MyFCN : public ROOT::Math::FitMethodFunction { 
+class GlobalChi2 : public ROOT::Math::FitMethodFunction { 
 
 public:
-   MyFCN( int dim, int npoints, ROOT::Math::FitMethodFunction & f1,  ROOT::Math::FitMethodFunction & f2) :
+   GlobalChi2( int dim, int npoints, ROOT::Math::FitMethodFunction & f1,  ROOT::Math::FitMethodFunction & f2) :
       ROOT::Math::FitMethodFunction(dim,npoints),
       fChi2_1(&f1), fChi2_2(&f2) {}
 
@@ -56,16 +39,16 @@ public:
    ROOT::Math::IMultiGenFunction * Clone() const { 
       // copy using default copy-ctor
       // i.e. function pointer will be copied (and not the functions)
-      return new MyFCN(*this);   
+      return new GlobalChi2(*this);   
    }
 
    double  DataElement(const double *par, unsigned int ipoint, double *g = 0) const { 
       // implement evaluation of single chi2 element
       double p1[2];
-      for (int i = 0; i < 2; ++i) p1[i] = par[iparB[i] ];
+      for (int i = 0; i < 2; ++i) p1[i] = par[iparPCC[i] ];
 
       double p2[5]; 
-      for (int i = 0; i < 5; ++i) p2[i] = par[iparSB[i] ];
+      for (int i = 0; i < 5; ++i) p2[i] = par[iparTrkVtx[i] ];
 
       double g1[2]; 
       double g2[5];
@@ -78,7 +61,7 @@ public:
          if (g != 0) { 
             value = fChi2_1->DataElement(p1, ipoint, g1);
             // update gradient values
-            for (int i= 0; i < 2; ++i) g[iparB[i]] = g1[i];         
+            for (int i= 0; i < 2; ++i) g[iparPCC[i]] = g1[i];         
          }
          else 
             // no need to compute gradient in this case
@@ -90,7 +73,7 @@ public:
          if ( g != 0) { 
             value =  fChi2_2->DataElement(p2, jpoint, g2);
             // update gradient values
-            for (int i= 0; i < 5; ++i) g[iparSB[i]] = g2[i];
+            for (int i= 0; i < 5; ++i) g[iparTrkVtx[i]] = g2[i];
          }
          else 
             // no need to compute gradient in this case
@@ -106,13 +89,13 @@ public:
    virtual Type_t Type() const { return ROOT::Math::FitMethodFunction::kLeastSquare; }
 
 private:
-   // parameter vector is first background (in common 1 and 2) and then is signal (only in 2)
+
    virtual double DoEval (const double *par) const {
       double p1[5];
-      for (int i = 0; i < 5; ++i) p1[i] = par[iparB[i] ];
+      for (int i = 0; i < 6; ++i) p1[i] = par[iparPCC[i] ];
 
       double p2[5]; 
-      for (int i = 0; i < 5; ++i) p2[i] = par[iparSB[i] ];
+      for (int i = 0; i < 5; ++i) p2[i] = par[iparTrkVtx[i] ];
 
       return (*fChi2_1)(p1) + (*fChi2_2)(p2);
    } 

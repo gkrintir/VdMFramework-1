@@ -116,12 +116,12 @@ def doRunVdmFitter(Fill, FitName, InputGraphsFiles, OutputDir, PlotsTempPath, Fi
                 canvas = fitter.doPlot(graph, functions, Fill, PlotsTempPath[0])
 
      resultsAll[keyAll] = results
-
+     table = [fitter.table]
      sys.stdout = sysstdout
      sys.stderr = sysstderr
      fitlogfile.close()
-
-     return resultsAll, fitter.table
+     
+     return resultsAll, table
     else: #Sim Fit
      for (keyAll1,keyAll2) in sorted(zip(graphsAll_list[0].keys(), graphsAll_list[1].keys())):
          graphs  = {}

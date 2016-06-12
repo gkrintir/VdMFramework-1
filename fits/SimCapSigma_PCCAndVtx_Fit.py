@@ -4,7 +4,7 @@ import math
 import sys
 from array import array
 from vdmUtilities import *
-r.gROOT.ProcessLine(".L myfcn.C+g")
+r.gROOT.ProcessLine(".L globalChi2.C+g")
 
 
 class SimCapSigma_PCCAndVtx_Fit(FitManager.FitProvider):
@@ -155,7 +155,7 @@ class SimCapSigma_PCCAndVtx_Fit(FitManager.FitProvider):
         fitter.Config().MinimizerOptions().SetPrintLevel(2)
         fitter.Config().SetMinimizer("Minuit2","Migrad")
 
-        myfun = r.MyFCN(nPars,dataff.Size()+dataff1.Size(),chi2ff, chi2ff1)
+        myfun = r.GlobalChi2(nPars,dataff.Size()+dataff1.Size(),chi2ff, chi2ff1)
 
         fitter.FitFCN(myfun,parffAndff1,dataff.Size()+dataff1.Size(), True)
         
