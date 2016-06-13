@@ -121,8 +121,8 @@
 	 {
 	 "Comment": "Input graphs file in <AnalysisDir>/<Luminometer>/graphs", 
 	 "InputGraphsFile" : "graphs/graphs_4634_noCorr.pkl",
-	 "FitName" : "SimCapSigma_PCCAndVtxNoConst",
-	 "FitConfigFile" : "fits/SimCapSigma_PCCAndVtxNoConst_Config.json",
+	 "FitName" : "SimCapSigma_PCCAndVtx",
+	 "FitConfigFile" : "fits/SimCapSigma_PCCAndVtx_Config.json",
 	 "PlotsTempPath": [["./plotstmp/1/"], ["./plotstmp/2/"]]
 	 }
 }

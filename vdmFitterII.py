@@ -5,8 +5,7 @@ import SG_Fit
 import SGConst_Fit
 import DG_Fit
 import DGConst_Fit
-import SimRatio_PCCAndVtx_Fit, SimRatio_PCCAndVtxNoConst_Fit
-import SimCapSigma_PCCAndVtx_Fit, SimCapSigma_PCCAndVtxNoConst_Fit
+import SimCapSigma_PCCAndVtx_Fit
 import GSupGConst_Fit
 import DG_2D_Fit
 from vdmUtilities import showAvailableFits
@@ -233,7 +232,7 @@ if __name__ == '__main__':
 # needs to be the same name as assumed in vdmUtilities, where it is ./plotstmp
     for path in PlotsTempPath:
         if not os.path.isdir(path[0]):
-            os.mkdir(path, 0755)
+            os.makedirs(path, 0755)
         else:
             filelist = os.listdir(path[0])
             for element in filelist:

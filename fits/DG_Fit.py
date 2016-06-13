@@ -147,7 +147,7 @@ class DG_Fit(FitManager.FitProvider):
     def doPlot(self, graph, functions, fill, tempPath):
         
         canvas =  r.TCanvas()
-        canvas = doPlot1D(graph, functions, fill)
+        canvas = doPlot1D(graph, functions, fill, tempPath)
         return canvas
 
 

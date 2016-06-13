@@ -423,7 +423,7 @@ if runVdmFitter == True:
 # needs to be the same name as assumed in vdmUtilities, where it is ./plotstmp
     for path in PlotsTempPath:
         if not os.path.isdir(path[0]):
-            os.mkdir(path[0], 0755)
+            os.makedirs(path[0], 0755)
         else:
             filelist = os.listdir(path[0])
             for element in filelist:
