@@ -374,6 +374,8 @@ if runVdmFitter == True:
     OutputDirs = []
     if 'InputGraphsFile' in vdmFitterConfig:
         InputGraphsFile = AnalysisDir + '/' + Luminometer + '/' + vdmFitterConfig['InputGraphsFile']
+        if (corrFull not in InputGraphsFile):
+            raw_input("InputGraphsFile extension different than the Correction to be applied!!; Press ENTER to continue.")
         InputGraphsFiles.append(InputGraphsFile)
     else:
         defaultGraphsFile = 'graphs' + '/' + 'graphs_' + Fill + '_' + corrFull + '.pkl'
