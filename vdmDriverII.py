@@ -9,6 +9,7 @@ from dataPrep_corr.makeBeamBeamFile import doMakeBeamBeamFile
 from dataPrep_corr.makeGhostsFile import doMakeGhostsFile
 from dataPrep_corr.makeSatellitesFile import doMakeSatellitesFile
 from dataPrep_corr.makeLengthScaleFile import doMakeLengthScaleFile
+from dataPrep_corr.makeOrbitDriftFile import doMakeOrbitDriftFile
 from makeGraphsFileII import doMakeGraphsFile
 from makeGraphs2D import doMakeGraphs2D
 from vdmFitterII import doRunVdmFitter
@@ -49,6 +50,9 @@ makeSatellitesFile = ConfigInfo['makeSatellitesFile']
 
 makeLengthScaleFile = False
 makeLengthScaleFile = ConfigInfo['makeLengthScaleFile']
+
+makeOrbitDriftFile = False
+makeOrbitDriftFile = ConfigInfo['makeOrbitDriftFile']
 
 makeGraphsFile = False
 makeGraphsFile = ConfigInfo['makeGraphsFile']
@@ -273,6 +277,33 @@ if makeLengthScaleFile == True:
     csvfile.close()
 
     with open(OutputDir+'/LengthScale_'+str(Fill)+'.pkl', 'wb') as f:
+        pickle.dump(table, f)
+
+
+if makeOrbitDriftFile == True:
+    
+    makeOrbitDriftFileConfig = ConfigInfo['makeOrbitDriftFileConfig']
+
+    print "Running makeOrbitDriftFile with config info:"
+    for key in makeOrbitDriftFileConfig:
+        print key, makeOrbitDriftFileConfig[key]
+    print ""
+
+    makeOrbitDriftFileConfig['AnalysisDir'] = AnalysisDir
+    makeOrbitDriftFileConfig['Fill'] = Fill
+
+    OutputDir = AnalysisDir +'/'+ makeOrbitDriftFileConfig['OutputSubDir']
+
+    table = {}
+    csvtable = []
+    table, csvtable = doMakeOrbitDriftFile(makeOrbitDriftFileConfig)
+
+    csvfile = open(OutputDir+'/OrbitDrift_'+str(Fill)+'.csv', 'wb')
+    writer = csv.writer(csvfile)
+    writer.writerows(csvtable)
+    csvfile.close()
+
+    with open(OutputDir+'/OrbitDrift_'+str(Fill)+'.pkl', 'wb') as f:
         pickle.dump(table, f)
 
 

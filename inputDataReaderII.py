@@ -37,6 +37,8 @@ class vdmInputData:
         self.tStart = []
         self.tStop = []
         self.displacement = []
+        self.displX = []
+        self.displY = []
 
 # to allow for SP coordinates that vary with bcid
         self.spPerBX = {}
@@ -115,6 +117,8 @@ class vdmInputData:
         self.tStart = [entry[3] for entry in self.sp] 
         self.tStop = [entry[4] for entry in self.sp] 
         self.displacement = [entry[5] for entry in self.sp] 
+        self.displX = [entry[6] for entry in self.sp]
+        self.displY = [entry[7] for entry in self.sp]
         self.nSP = len(self.displacement)
 
         return
@@ -283,6 +287,8 @@ class vdmInputData:
         print "tStart", self.tStart
         print "tStop", self.tStop
         print "displacement", self.displacement
+        print "displacement X", self.displX
+        print "displacement Y", self.displY
         print "SP coordinates, which may vary with BX", self.spPerBX
         
 

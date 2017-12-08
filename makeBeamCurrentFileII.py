@@ -318,9 +318,9 @@ def doMakeBeamCurrentFile(ConfigInfo):
     Fill = scanInfo["Fill"]     
     ScanNames = scanInfo["ScanNames"]     
     
-    CollidingBunches = scanInfo["CollidingBunches"]
-    FilledBunchesB1 = scanInfo["FilledBunchesB1"]
-    FilledBunchesB2 = scanInfo["FilledBunchesB2"]
+#    CollidingBunches = scanInfo["CollidingBunches"]
+#    FilledBunchesB1 = scanInfo["FilledBunchesB1"]
+#    FilledBunchesB2 = scanInfo["FilledBunchesB2"]
 
     table = {}
     csvtable = []
