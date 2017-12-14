@@ -55,7 +55,7 @@ class OrbitDrift_Corr(CorrectionManager.CorrectionProvider):
         for entry in inData:
             dispWithOD = [{} for value in entry.displacement]
             for idx, snm in enumerate(self.Names):
-                if snm in entry.scanName:
+                if snm == entry.scanName:
                     for idxsp, disp in enumerate(entry.displacement):
                         disp2 = entry.displX[idxsp]**2 + entry.displY[idxsp]**2
                         prevCorrScale = 1
