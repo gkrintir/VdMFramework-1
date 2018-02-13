@@ -3678,7 +3678,7 @@ I1501270999
 aI1501271946
 aasS'ParticleTypeB2'
 p1514
-S'ion'
+S'proton'
 p1515
 sS'BetaStar'
 p1516
@@ -4974,7 +4974,7 @@ Rp2050
 aF0.590504
 aasS'Date'
 p2051
-S'Nov192015'
+S'Jul282017'
 p2052
 sS'InputDIPFile'
 p2053
