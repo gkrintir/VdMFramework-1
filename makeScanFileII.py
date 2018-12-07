@@ -60,14 +60,14 @@ def doMakeScanFile(ConfigInfo):
 
     if (Fill != str(FillfromDip)):
             print("Mismatch between fill info from dip and from config file. Exit program.")
-            sys.exit(1)
+            #sys.exit(1)
     
 # check that there is only one fill number in file
 
     fillfromDipmean = df['fill'].mean()
     if not (float(FillfromDip) == fillfromDipmean):
         print "Attention: Fill number in first row of dip csv file ", FillfromDip, " and mean of the fill number over all rows in the file ", fillfromDipmean, " are different. Check file integrity. Exit program."
-        sys.exit(1)
+        #sys.exit(1)
 
     run = df['run'][0]
 

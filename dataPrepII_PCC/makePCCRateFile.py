@@ -51,7 +51,7 @@ def addScanInfoToTree(chain, inData, intermediateFile):
             print "  %3.0f%% (ETA: %s)" % \
                   (100. * index / num_entries, time.strftime("%H:%M:%S", eta))
 
-        timestamp = data.timeStamp
+        timestamp = data.timeStamp_begin
         #print timestamp
 
         i = None
@@ -107,28 +107,29 @@ def fillCounts(pcc_tree, tree_scan_info, inData, PCC_BCID, DataType):
 # sanity check: determine which bcid are actually present in the tree
 # typically, PCC data is available only for 5 out of all colliding bx
 
-    maxNoBCIDinLHC = 3564
-    histBx = ROOT.TH1F("histBx", "BCID actually pesent in pixel data tree", maxNoBCIDinLHC, 1., maxNoBCIDinLHC + 1.)
-    #pcc_tree.Print()
-    pcc_tree.Draw("BXid >> histBx")
-    PCC_bcid_test = []
-    for i in xrange(1, maxNoBCIDinLHC+1):
-        if histBx.GetBinContent(i) > 0:
-            print histBx.GetBinContent(i)
-            PCC_bcid_test.append(i)
+    #maxNoBCIDinLHC = 3564
+    #histBx = ROOT.TH1F("histBx", "BCID actually pesent in pixel data tree", maxNoBCIDinLHC, 1., maxNoBCIDinLHC + 1.)
+    pcc_tree.Print()
+    #pcc_tree.Draw("bunchCrossing >> histBx")
+    #PCC_bcid_test = []
+    #for i in xrange(1, maxNoBCIDinLHC+1):
+    #    if histBx.GetBinContent(i) > 0:
+    #        print histBx.GetBinContent(i)
+    #        PCC_bcid_test.append(i)
             
-    print "In PCC tree find these bcid with PCC data: ", PCC_bcid_test
-    for entry in PCC_bcid_test:
-        if entry not in PCC_BCID:
-            print "WARNING: Discrepancy between expected BCIDs (from config) and actually present BCIDs in PCC ntuple"
+    #print "In PCC tree find these bcid with PCC data: ", PCC_bcid_test
+    #for entry in PCC_bcid_test:
+    #    if entry not in PCC_BCID:
+    #        print "WARNING: Discrepancy between expected BCIDs (from config) and actually present BCIDs in PCC ntuple"
 
     clusters = []
     for (i, in_data)  in enumerate(inData):
         clusters.append([])
         for j in xrange(in_data.nSP):
             clusters[i].append({})
-            for bx in PCC_BCID:
-                clusters[i][j][bx] = []
+            #for bx in PCC_BCID:
+                #clusters[i][j][bx] = []
+            clusters[i][j] = []
 
     import time
 
@@ -149,7 +150,7 @@ def fillCounts(pcc_tree, tree_scan_info, inData, PCC_BCID, DataType):
         if data.scanIndex < 0:
             print "WARNING Found scanIndex < 0. Should this happen?"
         num_clus = GetCount(data,DataType)
-        clusters[data.scanIndex][data.pointIndex][data.BXid].append(num_clus)
+        clusters[data.scanIndex][data.pointIndex].append(num_clus)
 
     with open('clusterCounts.pkl', 'wb') as f:
         pickle.dump(clusters, f)
@@ -170,13 +171,13 @@ def extractPCCRates(clusters, PCC_BCID, in_data):
         row = [in_data.scanNumber, in_data.scanName, str(j+1)]
         lumibx = {}
         lumierrbx = {}
-        for bx in PCC_BCID:
-            data = clusters[in_data.scanNumber-1][j][bx]    
-            mean = np.mean(data)
-            std = np.std(data)
-            mean_unc = std / math.sqrt(len(data))
-            lumibx[str(bx)] = mean
-            lumierrbx[str(bx)] = mean_unc
+        #for bx in PCC_BCID:
+        data = clusters[in_data.scanNumber-1][j]#[bx]    
+        mean = np.mean(data)
+        std = np.std(data)
+        mean_unc = std / math.sqrt(len(data))
+        lumibx["265"] = mean
+        lumierrbx["265"] = mean_unc
         row.append([lumibx, lumierrbx])
         helpertable.append(row)
 
@@ -234,14 +235,15 @@ def doMakePCCRateFile(ConfigInfo):
 # Read in the combined tree containing both the tree from the
 # PixelLumiTupler and the VdM scan information.
     in_file = ROOT.TFile.Open(intermediateFile, "READ")
-    pcc_tree = in_file.Get(sub_tree_name)
+    pcc_tree = in_file.Get("pccminitree")
+    print in_file, sub_tree_name
     #pcc_tree = chain
     tree_scan_info = in_file.Get(scan_info_tree_name)
-    #print type(tree_scan_info)
+    print type(tree_scan_info)
 
-    #if not pcc_tree or not tree_scan_info:
-    #    print >> "ERROR Did not find both VdM trees - Exit program"
-    #    sys.exit(1)
+    if not pcc_tree or not tree_scan_info:
+        print "ERROR Did not find both VdM trees - Exit program"
+        sys.exit(1)
 
     clusters = []
     clusters = fillCounts(pcc_tree, tree_scan_info, inData, PCC_BCID, DataType)
@@ -250,7 +252,7 @@ def doMakePCCRateFile(ConfigInfo):
         clusters = pickle.load(f)
 
     csvtable = []
-    csvtable.append(["ScanNumber, ScanName, ScanPointNumber, PCCRates per bx, PCCRateErr per bx"])
+    csvtable.append(["ScanNumber, ScanName, ScanPointNumber, PCCRates all bx, PCCRateErr all bx"])
 
     table = {}
 
@@ -265,10 +267,10 @@ def doMakePCCRateFile(ConfigInfo):
         for entry in helper:
             csvtable.append(entry[:3])
             helper1= entry[3][0]
-            helper1 = sorted(helper1.items(), key=lambda x: int(x[0])) 
+            #helper1 = sorted(helper1.items(), key=lambda x: int(x[0])) 
             csvtable.append([helper1])
             helper2 = entry[3][1]
-            helper2 = sorted(helper2.items(), key=lambda x: int(x[0]))
+            #helper2 = sorted(helper2.items(), key=lambda x: int(x[0]))
             csvtable.append([helper2])
 
     return table, csvtable

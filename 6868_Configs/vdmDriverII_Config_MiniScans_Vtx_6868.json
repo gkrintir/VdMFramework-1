@@ -1,0 +1,142 @@
+{
+"Fill": "6868",
+"Date": "Jul012018",
+"Luminometer": "VTX",
+"AnalysisDir": "Fill6868_Jul012018_MiniScans",
+"Corr" : ["noCorr"],
+"Comment": "Output of following step goes to <AnalysisDir>/cond", 
+"makeScanFile": false,
+"Comment": "Output of following step goes to <AnalysisDir>/LuminometerData",
+"makeRateFile": true,
+"Comment": "Output of following step goes to <AnalysisDir>/cond", 
+"makeBeamCurrentFile": false,
+"Comment": "Output of following step goes to <AnalysisDir>/corr",
+"makeBeamBeamFile": false,
+"Comment": "Output of following step goes to <AnalysisDir>/corr",
+"makeGhostsFile": false,
+"Comment": "Output of following step goes to <AnalysisDir>/corr",
+"makeSatellitesFile": false,
+"Comment": "Output of following step goes to <AnalysisDir>/<Luminometer>/graphs", 
+"makeLengthScaleFile": false,
+"Comment": "Output of following step goes to <AnalysisDir>/corr",
+"makeGraphsFile": true,
+"Comment": "Output of following step goes to <AnalysisDir>/corr",
+"makeGraphs2D": false,
+"Comment": "Output of following step goes to <AnalysisDir>/<Luminometer>/results/<Corr>", 
+"runVdmFitter": true,
+"makeScanFileConfig":
+	{
+	"InputCentralPath": "/eos/cms/store/group/comm_luminosity/VdM/scanFill6868_30June2018/central/",
+	"InputDIPFile" : "/eos/cms/store/group/comm_luminosity/VdM/scanFill6868_30June2018/beamData/vdm_4299086b-716a-47ca-8d96-ddc81ee27717.csv",
+	"ScanNames" : ["B1Y1","B1Y2","B1Y3","B1Y4","B1Y5","B1X1","B1X2","B1X3","B1X4","B1X5","B2Y1","B2Y2","B2Y3","B2Y4","B2Y5","B2X1","B2X2","B2X3","B2X4","B2X5"],
+	"Comment" : "Since X,Y scans are automatically differentiated, a time window can include an X and a Y scan, will still work, timestamp in UTC", 
+	"ScanTimeWindows" :[[1530417492, 1530417677],[1530417706, 1530417893],[1530417920, 1530418107],[1530418135, 1530418321],[1530418349, 1530418534],
+			   [1530418959, 1530419147],[1530419175, 1530419364],[1530419392, 1530419580],[1530419606, 1530419795],[1530419822, 1530420011],
+			   [1530420649, 1530420840],[1530420869, 1530421060],[1530421089, 1530421279],[1530421308, 1530421499],[1530421526, 1530421717],
+                     	   [1530422217, 1530422402],[1530422428, 1530422612],[1530422639, 1530422823],[1530422849, 1530423033],[1530423060, 1530423243]],
+	"Comment" : "betaStar in m, angle in microrad",
+	"BetaStar" : 19.17,
+	"Angle" : 0.0,
+	"Offset" : [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+	"ParticleTypeB1" : "proton",
+	"ParticleTypeB2" : "proton",
+	"Comment": "Beam energies in MeV", 
+	"EnergyB1" : 6499,
+	"EnergyB2" : 6499,
+	"OutputSubDir" : "cond"
+	},
+"makeRateFileConfig":
+	{	
+	"InputPCCFiles": [
+	"/eos/cms/store/group/phys_top/gkrintir/ForLumiComputation/2018/NormalFills/6847_And_6854_And_6868/ZeroBias1/crab_CMSSW_10_1_7_ZeroBias1_splitPerBXTrue/180817_121608/0000/minituples_supersep/merged/merged.root",
+	"/eos/cms/store/group/phys_top/gkrintir/ForLumiComputation/2018/NormalFills/6847_And_6854_And_6868/ZeroBias2/crab_CMSSW_10_1_7_ZeroBias2_splitPerBXTrue/180817_121630/0000/minituples_supersep/merged/merged.root",
+        "/eos/cms/store/group/phys_top/gkrintir/ForLumiComputation/2018/NormalFills/6847_And_6854_And_6868/ZeroBias3/crab_CMSSW_10_1_7_ZeroBias3_splitPerBXTrue/180817_121652/0000/minituples_supersep/merged/merged.root",
+        "/eos/cms/store/group/phys_top/gkrintir/ForLumiComputation/2018/NormalFills/6847_And_6854_And_6868/ZeroBias4/crab_CMSSW_10_1_7_ZeroBias4_splitPerBXTrue/180817_121713/0000/minituples_supersep/merged/merged.root",
+        "/eos/cms/store/group/phys_top/gkrintir/ForLumiComputation/2018/NormalFills/6847_And_6854_And_6868/ZeroBias5/crab_CMSSW_10_1_7_ZeroBias5_splitPerBXTrue/180914_182538/0000/minituples_supersep/merged/merged.root",
+        "/eos/cms/store/group/phys_top/gkrintir/ForLumiComputation/2018/NormalFills/6847_And_6854_And_6868/ZeroBias6/crab_CMSSW_10_1_7_ZeroBias6_splitPerBXTrue/180818_163932/0000/minituples_supersep/merged/merged.root",
+        "/eos/cms/store/group/phys_top/gkrintir/ForLumiComputation/2018/NormalFills/6847_And_6854_And_6868/ZeroBias7/crab_CMSSW_10_1_7_ZeroBias7_splitPerBXTrue/180817_121826/0000/minituples_supersep/merged/merged.root",
+        "/eos/cms/store/group/phys_top/gkrintir/ForLumiComputation/2018/NormalFills/6847_And_6854_And_6868/ZeroBias8/crab_CMSSW_10_1_7_ZeroBias8_splitPerBXTrue/180817_121848/0000/minituples_supersep/merged/merged.root"
+	],
+        "Comment": "BCIDs on which trigger read out PCC values",
+        "PCC_BCID": [265,865,1780,2192,3380],
+        "AnalysisDir": "../Fill6868_Nov222016_MiniScans",
+        "Comment": "The following directories are relative to <AnalysisDir>",
+        "InputScanFile" : "cond/Scan_6868.pkl",
+        "PCCTreeName": "pccminitree",
+	"DataType": "VTX",
+        "OutputSubDir" : "LuminometerData",
+        "addScanInfo": true
+	},
+"makeBeamCurrentFileConfig":
+	{
+	"InputCentralPath": "/eos/cms/store/group/comm_luminosity/VdM/scanFill6868_30June2018/central/",
+        "Comment": "Input scan file in <AnalysisDir>/<InputScanFile>",
+        "InputScanFile" : "cond/Scan_6868.pkl",
+	"ReadFromTimber" : true,
+        "CalibrateFBCTtoDCCT" : true,
+        "OutputSubDir" : "cond"
+	},
+"makeBeamBeamFileConfig":
+	{
+	"Comment": "Input scan info file is <AnalysisDir>/<InputScanFile>",
+	"InputScanFile" : "cond/Scan_6868_Rest.pkl",
+	"Comment": "Input beam currents file is <AnalysisDir>/<InputBeamCurrentFile>",
+	"InputBeamCurrentFile" : "cond/BeamCurrents_6868_NoGhostCorrections.pkl",
+	"Comment": "Input CapSigmas in <AnalysisDir>/<Luminometer>/results",
+	"InputCapSigmaFile" : "noCorr/DGConst_1_FitResults.pkl",
+	"Scanpairs" : [[1,2],[3,4],[5,6]],
+	"Comment": "This is relative to <AnalysisDir>",
+	"OutputSubDir": "corr"
+	},
+"makeGhostsFileConfig":
+	{
+	"Comment" : "Where to find the correction factors in json format",
+	"InputDataDir" : "dataPrep_corr/corrData",
+	"Comment": "This is relative to <AnalysisDir>",
+	"OutputSubDir": "corr"
+	},
+"makeSatellitesFileConfig":
+	{
+	"Comment" : "Where to find the correction factors in json format",
+	"InputDataDir" : "dataPrep_corr/corrData",
+	"Comment": "This is relative to <AnalysisDir>",
+	"OutputSubDir": "corr"
+	},
+"makeLengthScaleFileConfig":
+	{
+	"Comment": "Length scale scan fill",
+	"FillLS": "3563",	
+	"Comment" : "Where to find the correction factors in json format",
+	"InputDataDir" : "dataPrep_corr/corrData",
+	"Comment": "This is relative to <AnalysisDir>",
+	"OutputSubDir": "corr"
+	},
+"makeGraphsFileConfig":
+	{
+	"Comment": "Input scan file in <AnalysisDir>/<InputScanFile>",
+	"InputScanFile" : "cond/Scan_6868.pkl",
+	"Comment": "Input beam currents file in <AnalysisDir>/<InputBeamCurrentFile>",
+	"InputBeamCurrentFile" : "cond/BeamCurrents_6868.pkl",
+        "Comment": "Input luminometer data in <AnalysisDir>/<InputLuminometerData>",
+	"InputLuminometerData" : "LuminometerData/Rates_VTX_6868.pkl",
+	"FitNumber" : "1",
+	"OutputSubDir" : "graphs"       
+	},
+"makeGraphs2DConfig":
+	{
+	"Comment": "Defines each X/Y pair for which to make 2D graphs", 
+	"Scanpairs" : [[1,2],[4,3],[6,5],[8,7],[10,9]],
+	"Comment": "Input/output directory is <AnalysisDir>/<Luminometer>/graphs",
+	"InOutSubDir": "graphs"
+	},
+"vdmFitterConfig":
+	 {
+	 "Comment": "Input graphs file in <AnalysisDir>/<Luminometer>/graphs", 
+	 "Comment": "If InputGraphsFile parameter empty, the graphs/graphs_Fill_Corr.pkl will be chosen",
+	 "InputGraphsFile" : "graphs/graphs_6868_noCorr.pkl",
+	 "FitName" : "SG",
+	 "FitNumber" : "1",
+         "FitConfigFile" : "fits/SG_Config.json",
+	 "PlotsTempPath": [["./plotstmp/1/"], ["./plotstmp/2/"]]
+	 }
+}

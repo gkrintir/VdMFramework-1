@@ -52,7 +52,7 @@ class SG_Fit(FitManager.FitProvider):
 
         for j in range(5):
             fit = graph.Fit("ff","S")
-            if fit.CovMatrixStatus()==3 and fit.Chi2()/fit.Ndf() < 2: break
+            #if fit.CovMatrixStatus()==3 and fit.Chi2()/fit.Ndf() < 2: break
 
         r.gROOT.ProcessLine("gSystem->RedirectOutput(0);")
 

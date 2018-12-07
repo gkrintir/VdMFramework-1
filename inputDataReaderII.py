@@ -226,7 +226,7 @@ class vdmInputData:
                         if bx not in usedCollidingBunches:
                             usedCollidingBunches.append(bx)
                 except:
-                    print "in usedCollidingBunches: BCID ", bx, " is not filled at the scanpoint ", j
+                    print "in usedCollidingBunches: BCID ", bx, " is not filled at the scanpoint ! ", j
         self.usedCollidingBunches = usedCollidingBunches
 
 # this is the natural order for analysis
@@ -240,8 +240,9 @@ class vdmInputData:
                     self.lumi[i].append(value)
                     valueErr = self.lumiErrPerSP[j][str(bx)]
                     self.lumiErr[i].append(valueErr)
+                    #print self.lumi[i], self.lumiErr[i]
                 except:
-                    print "in GetLuminometerData: BCID ", bx, "is not filled at the scanpoint ", j
+                    print "in GetLuminometerData: BCID ", bx, "is not filled at the scanpoint !!", j
                 else:
                     SPNumberPerBX[i].append(self.displacement[j])
             self.lumiPerBX[bx] = self.lumi[i]
@@ -250,12 +251,12 @@ class vdmInputData:
 
         self.sumLumi = [0.0 for a in range(self.nSP)]
         self.sumLumiErr = [0.0 for a in range(self.nSP)]
-        for j in range(self.nSP):
-            try:
-                self.sumLumi[j] = self.lumiPerSP[j]['sum'] 
-                self.sumLumiErr[j] = self.lumiErrPerSP[j]['sum'] 
-            except:
-                print "in GetLuminometerData: BCID ", bx, "is not filled at the scanpoint ", j
+        #for j in range(self.nSP):
+        #    try:
+        #        self.sumLumi[j] = self.lumiPerSP[j]['sum'] 
+        #        self.sumLumiErr[j] = self.lumiErrPerSP[j]['sum'] 
+        #    except:
+        #        print "in GetLuminometerData: BCID ", bx, "is not filled at the scanpoint !!!", j
 
         return
         

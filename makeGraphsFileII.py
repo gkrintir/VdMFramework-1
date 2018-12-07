@@ -163,8 +163,8 @@ def doMakeGraphsFile(ConfigInfo):
         for i, bx in enumerate(entry.usedCollidingBunches):
 # BCIDs written at small number of SP are omitted (the list of short omitted bunches is added to log)            
 # to avoid problems in vdmFitter: the number of SP should exceed the minimal number of freedom degrees for fitting
-
-             if len(entry.spPerBX[bx])>5:
+             if len(entry.spPerBX[bx])>=1:
+                print bx 
                 coord=entry.spPerBX[bx]
                 coorde = [0.0 for a in coord] 
                 coord = array("d",coord)
@@ -202,7 +202,7 @@ def doMakeGraphsFile(ConfigInfo):
             graph = r.TGraphErrors(len(coord),coord,lumi,coorde,lumie)
             graph.SetName(name)
             graph.SetTitle(name)
-            graphsList['sum'] = graph
+            #graphsList['sum'] = graph
         except KeyError,e: 
             print 'KeyError in makeGraphsFile- reason "%s"' % str(e)
 

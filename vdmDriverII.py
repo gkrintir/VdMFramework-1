@@ -120,7 +120,7 @@ if makeRateFile == True:
     table = {}
     csvtable = []
 
-    if Luminometer=='PCC':
+    if Luminometer=='PCC' or Luminometer=='VTX':
         table, csvtable = doMakePCCRateFile(makeRateFileConfig)
     else:
         table, csvtable = doMakeRateFile(makeRateFileConfig)
