@@ -1,5 +1,7 @@
 import sys
 import os
+import math
+from math import sqrt
 
 import tables
 import pandas as pd
@@ -22,6 +24,14 @@ def doMakeScanFile(ConfigInfo):
     ParticleTypeB2 = str(ConfigInfo['ParticleTypeB2'])
     EnergyB1 = str(ConfigInfo['EnergyB1'])
     EnergyB2 = str(ConfigInfo['EnergyB2'])
+    
+    if 'BeamSeparationData' not in ConfigInfo:
+        BeamSeparationData = "Nominal"
+    else:
+        BeamSeparationData = str(ConfigInfo['BeamSeparationData'])
+    if (BeamSeparationData == "DOROS"):
+        BPMOffsetTimes = ConfigInfo['BPMOffsetTimes']
+        BPMOffsetValues = ConfigInfo['BPMOffsetValues']
 
     print ""
     print "Making scan file for scan during fill ", Fill
@@ -79,6 +89,9 @@ def doMakeScanFile(ConfigInfo):
         print "List of all runs in dip file: ", df['run'].drop_duplicates().tolist()
 
     #fill=int(Fill)
+    
+# Print what data is going to be used    
+    print "Using ", BeamSeparationData, " beam separation data."
 
     scan = [ [] for entry in ScanNames]
     Run = [0 for entry in ScanNames]
@@ -121,6 +134,11 @@ def doMakeScanFile(ConfigInfo):
 
 # cut off zero separation points at very beginning and very end of scan            
         
+#        if (BeamSeparationData == "Nominal"):
+#            print "Using Nominal beam separation data."
+#        else:
+#            print "BeamSeparationData = ", BeamSeparationData
+        
         firstnonzeroIdx = dfSP.index[dfSP['nominal_separation'].nonzero()[0]][0]
         lastnonzeroIdx = dfSP.index[dfSP['nominal_separation'].nonzero()[0]][-1]
 
@@ -138,8 +156,67 @@ def doMakeScanFile(ConfigInfo):
             DFsingleSP = dfSP[dfSP.nominal_separation == entry]['sec'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
             tstart = DFsingleSP.min() 
             tstop = DFsingleSP.max() 
-            relDis = round(entry, 6)
-            SP = [idx+1, tstart, tstop, relDis]
+            
+            if (BeamSeparationData == "Nominal"):
+                relDis = round(entry, 6)
+                
+                nomB1X = dfSP[dfSP.nominal_separation == entry]['set_nominal_B1xingPlane'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                nomB1Y = dfSP[dfSP.nominal_separation == entry]['set_nominal_B1sepPlane'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                nomB2X = dfSP[dfSP.nominal_separation == entry]['set_nominal_B2xingPlane'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                nomB2Y = dfSP[dfSP.nominal_separation == entry]['set_nominal_B2sepPlane'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                
+                nomX = [(a - b) for a, b in zip(nomB1X, nomB2X) if not math.isnan(a+b)]
+                nomY = [(a - b) for a, b in zip(nomB1Y, nomB2Y) if not math.isnan(a+b)]
+                
+                Xdis = round(sum(nomX)/float(len(nomX)), 6)
+                Ydis = round(sum(nomY)/float(len(nomY)), 6)
+            elif (BeamSeparationData == "DOROS"):
+                idT = -1
+                idx = 0
+                for OffT in BPMOffsetTimes:   # Python's for loops are a "for each" loop 
+                    if (tstart > OffT):
+                        idT = idx
+                    idx += 1
+                
+                if idT == -1:
+                    print "ERROR: No suitable BPM offset found - check BPMOffsetTimes. Exit program."
+                    sys.exit(1)
+                
+                dorB1Lx = dfSP[dfSP.nominal_separation == entry]['bpm_5LDOROS_B1hPos'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                dorB1Rx = dfSP[dfSP.nominal_separation == entry]['bpm_5RDOROS_B1hPos'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                dorB2Lx = dfSP[dfSP.nominal_separation == entry]['bpm_5LDOROS_B2hPos'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                dorB2Rx = dfSP[dfSP.nominal_separation == entry]['bpm_5RDOROS_B2hPos'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                dorOffB1x = BPMOffsetValues[idT][0]
+                dorOffB2x = BPMOffsetValues[idT][2]
+
+                dorB1Ly = dfSP[dfSP.nominal_separation == entry]['bpm_5LDOROS_B1vPos'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                dorB1Ry = dfSP[dfSP.nominal_separation == entry]['bpm_5RDOROS_B1vPos'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                dorB2Ly = dfSP[dfSP.nominal_separation == entry]['bpm_5LDOROS_B2vPos'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                dorB2Ry = dfSP[dfSP.nominal_separation == entry]['bpm_5RDOROS_B2vPos'][range(firstnonzeroIdx, lastnonzeroIdx+1)]
+                dorOffB1y = BPMOffsetValues[idT][1]
+                dorOffB2y = BPMOffsetValues[idT][3]
+
+                dorDisX = [(((a + b)/2 - dorOffB1x) - ((c + d)/2 - dorOffB2x))/1000 for a, b, c, d in zip(dorB1Lx, dorB1Rx, dorB2Lx, dorB2Rx) if not math.isnan(a+b+c+d)]
+                dorDisY = [(((a + b)/2 - dorOffB1y) - ((c + d)/2 - dorOffB2y))/1000 for a, b, c, d in zip(dorB1Ly, dorB1Ry, dorB2Ly, dorB2Ry) if not math.isnan(a+b+c+d)]
+                
+                dorDis = [sqrt(a*a + b*b) for a, b in zip(dorDisX, dorDisY)]
+                
+                if ("X" in scanName):
+                    relDisSign = math.copysign(1, (sum(dorDisX)/float(len(dorDisX))))
+                elif ("Y" in scanName):
+                    relDisSign = math.copysign(1, (sum(dorDisY)/float(len(dorDisY))))
+                else:
+                    print "ERROR: Irregular scanName: ", scanName
+                    sys.exit(1)
+                    
+                relDis = round(relDisSign*(sum(dorDis)/float(len(dorDis))), 6)
+                Xdis = round(sum(dorDisX)/float(len(dorDisX)), 6)
+                Ydis = round(sum(dorDisY)/float(len(dorDisY)), 6)
+            else:
+                print "ERROR: Unknown BeamSeparationData = ", BeamSeparationData
+                sys.exit(1)
+            
+            SP = [idx+1, tstart, tstop, relDis, Xdis, Ydis]
 
             scan[i].append(SP)
             Run[i] = run
@@ -210,7 +287,7 @@ def doMakeScanFile(ConfigInfo):
     csvtable.append(["FilledBunchesB1", filledBunches1])
     csvtable.append(["FilledBunchesB2", filledBunches2])
     csvtable.append(["CollidingBunches", collBunches ])
-    csvtable.append(["scan number", "scan type", "scan points: number, tStart, tStop, relative displacement"])
+    csvtable.append(["scan number", "scan type", "scan points: number, tStart, tStop, relative displacement, displacement X, displacement Y"])
 
     for i, scanName in enumerate(ScanNames):
         table["Scan_" + str(i+1)]=[]
@@ -221,6 +298,8 @@ def doMakeScanFile(ConfigInfo):
             row.append(scan[i][j][1])
             row.append(scan[i][j][2])
             row.append(scan[i][j][3])
+            row.append(scan[i][j][4])
+            row.append(scan[i][j][5])
             csvtable.append(row)
             table["Scan_" + str(i+1)].append(row)
 

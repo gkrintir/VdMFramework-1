@@ -4,31 +4,35 @@
 "Luminometer": "PCC",
 "AnalysisDir": "Fill4954_May272016",
 "CorrLater" : ["LengthScale", "Ghosts", "Satellites"],
-"Corr" : ["noCorr"],
+"Comment": "Corr : [noCorr,BeamBeam,LengthScale,OrbitDrift]",
+"Corr" : ["BeamBeam","LengthScale","OrbitDrift"],
 "Comment": "Output of following step goes to <AnalysisDir>/cond",
 "makeScanFile": false,
 "Comment": "Output of following step goes to <AnalysisDir>/LuminometerData",
 "makeRateFile": false,
 "Comment": "Output of following step goes to <AnalysisDir>/cond",
-"makeBeamCurrentFile": false,
+"makeBeamCurrentFile": true,
 "Comment": "Output of following step goes to <AnalysisDir>/corr",
 "makeBeamBeamFile": false,
 "Comment": "Output of following step goes to <AnalysisDir>/corr",
 "makeGhostsFile": false,
 "Comment": "Output of following step goes to <AnalysisDir>/corr",
 "makeSatellitesFile": false,
-"Comment": "Output of following step goes to <AnalysisDir>/<Luminometer>/graphs",
+"Comment": "Output of following step goes to <AnalysisDir>/corr",
 "makeLengthScaleFile": false,
 "Comment": "Output of following step goes to <AnalysisDir>/corr",
-"makeGraphsFile": true,
-"Comment": "Output of following step goes to <AnalysisDir>/corr",
+"makeOrbitDriftFile": false,
+"Comment": "Output of following step goes to <AnalysisDir>/<Luminometer>/graphs",
+"makeGraphsFile": false,
+"Comment": "Output of following step goes to <AnalysisDir>/<Luminometer>/graphs",
 "makeGraphs2D": false,
 "Comment": "Output of following step goes to <AnalysisDir>/<Luminometer>/results/<Corr>",
-"runVdmFitter": true,
+"runVdmFitter": false,
 "makeScanFileConfig":
 	{
 	"InputCentralPath": "/eos/cms/store/group/comm_luminosity/VdM/scanFill4954_27May16/compressed/central",
-	"InputDIPFile" : "/eos/cms/store/group/comm_luminosity/VdM/scanFill4954_27May16/compressed/beamData/vdm_c88ca21f-8040-4cdd-8f2e-7c30dbe640ca.csv",
+	"Comment" : "Prev InputDIPFile : /eos/cms/store/group/comm_luminosity/VdM/scanFill4954_27May16/compressed/beamData/vdm_c88ca21f-8040-4cdd-8f2e-7c30dbe640ca.csv",
+	"InputDIPFile" : "/eos/cms/store/group/comm_luminosity/VdM/scanFill4954_27May16/compressed/beamData/vdm_c88ca21f-8040-4cdd-8f2e-7c30dbe640ca_run274100.csv",
 	"ScanNames" : ["X1","Y1","Y2","X2","I1X","I1Y","I2X","I2Y","X3","Y3"],
 	"Comment" : "Since X,Y scans are automatically differentiated, a time window can include an X and a Y scan, will still work, timestamp in UTC",
 	"ScanTimeWindows" :[[1464336285, 1464337268],[1464337522, 1464338508],[1464338769, 1464339757],[1464339948, 1464340930],[1464341247, 1464342231],[1464342677, 1464343658],[1464344429,1464345408],[1464345652,1464346642],[1464350869, 1464351851],[1464352142, 1464353130]],
@@ -42,14 +46,20 @@
 	"Comment": "Beam energies in MeV",
 	"EnergyB1" : 6500,
 	"EnergyB2" : 6500,
-	"OutputSubDir" : "cond"
+	"OutputSubDir" : "cond",
+    "Comment" : "Type of the beam separation data (Nominal / DOROS)",
+	"BeamSeparationData" : "Nominal",
+	"Comment" : "BPM Offsets timestamp",
+	"BPMOffsetTimes" : [1464336161, 1464348515, 1464350753],
+	"Comment" : "BPM Offsets: B1-H, B1-V, B2-H, B2-V",
+	"BPMOffsetValues" : [[203.853, -25.5065, 68.544, -231.166],[205.24, -20.4665, 69.0795, -228.808],[205.714, -19.637, 67.4515, -228.611]]
 	},
 "makeRateFileConfig":
 	{
 	"InputPCCFiles": ["/eos/cms/store/group/comm_luminosity/PCC/VdM/May272016_274100_PromptReco_vdmminitrees.root"],
     "Comment": "BCIDs on which trigger read out PCC values",
     "PCC_BCID": [41,281,872,1783,2063],
-    "AnalysisDir": "../Fill4954_May272016",
+    "AnalysisDir": "../Fill4954_May272016_LWt10_DOROS",
     "Comment": "The following directories are relative to <AnalysisDir>",
     "InputScanFile" : "cond/Scan_4954.pkl",
     "PCCTreeName": "pccminitree",
@@ -102,6 +112,15 @@
     "Comment": "Which are the single beam scans and which beam (1 or 2) *moves* in these scans",
     "SingleBeamScans": [["I1X", 2], ["I1Y", 2], ["I2X", 1], ["I2Y", 1]]
 	},
+"makeOrbitDriftFileConfig":
+	{
+	"Comment" : "Where to find the correction factors in json format",
+	"InputDataDir" : "dataPrep_corr/corrData",
+    "Comment" : "Type of the orbit drifts file (DOROS / arcBPM / arcBPM_m_DOROS / arcBPM_DOROS_ave)",
+	"OrbitDriftType" : "arcBPM_DOROS_ave",
+	"Comment": "This is relative to <AnalysisDir>",
+	"OutputSubDir": "corr"
+	},
 "makeGraphsFileConfig":
 	{
 	"Comment": "Input scan file in <AnalysisDir>/<InputScanFile>",
@@ -122,7 +141,7 @@
 "vdmFitterConfig":
 	{
 	"Comment": "Input graphs file in <AnalysisDir>/<Luminometer>/graphs",
-	"InputGraphsFile" : "graphs/graphs_4954_noCorr.pkl",
+	"InputGraphsFile" : "graphs/graphs_4954_BeamBeam_LengthScale_OrbitDrift.pkl",
     "FitName" : "DGConst",
 	"FitConfigFile" : "fits/DGConst_Config_PCC.json",
     "PlotsTempPath": [["./plotstmp/PCC/"], ["./plotstmp/VTX/"]]
