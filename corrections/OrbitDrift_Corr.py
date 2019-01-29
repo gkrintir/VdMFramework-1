@@ -74,7 +74,7 @@ class OrbitDrift_Corr(CorrectionManager.CorrectionProvider):
                                 break
                         else:
                             print "ERROR: In scan", entry.scanName, " point average time ", tAve, " not in the range of [", self.TimeWindows[idx][0], ", ", self.TimeWindows[idx][2], "]."
-                        
+                            
                         newValX = entry.displX[idxsp]*prevCorrScale + (ODvalX / 1000)
                         newValY = entry.displY[idxsp]*prevCorrScale + (ODvalY / 1000)
                             

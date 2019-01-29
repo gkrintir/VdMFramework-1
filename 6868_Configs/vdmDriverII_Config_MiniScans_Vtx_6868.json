@@ -4,10 +4,11 @@
 "Luminometer": "VTX",
 "AnalysisDir": "Fill6868_Jul012018_MiniScans",
 "Corr" : ["noCorr"],
+"Corr" : ["OrbitDrift"],
 "Comment": "Output of following step goes to <AnalysisDir>/cond", 
-"makeScanFile": false,
+"makeScanFile": true,
 "Comment": "Output of following step goes to <AnalysisDir>/LuminometerData",
-"makeRateFile": true,
+"makeRateFile": false,
 "Comment": "Output of following step goes to <AnalysisDir>/cond", 
 "makeBeamCurrentFile": false,
 "Comment": "Output of following step goes to <AnalysisDir>/corr",
@@ -19,6 +20,7 @@
 "Comment": "Output of following step goes to <AnalysisDir>/<Luminometer>/graphs", 
 "makeLengthScaleFile": false,
 "Comment": "Output of following step goes to <AnalysisDir>/corr",
+"makeOrbitDriftFile": true,
 "makeGraphsFile": true,
 "Comment": "Output of following step goes to <AnalysisDir>/corr",
 "makeGraphs2D": false,
@@ -111,6 +113,15 @@
 	"Comment": "This is relative to <AnalysisDir>",
 	"OutputSubDir": "corr"
 	},
+"makeOrbitDriftFileConfig":
+	{
+	"Comment" : "Where to find the correction factors in json format",
+	"InputDataDir" : "dataPrep_corr/corrData",
+  	"Comment" : "Type of the orbit drifts file (DOROS / arcBPM / arcBPM_m_DOROS / arcBPM_DOROS_ave)",
+	"OrbitDriftType" : "arcBPM",
+	"Comment": "This is relative to <AnalysisDir>",
+	"OutputSubDir": "corr"
+},
 "makeGraphsFileConfig":
 	{
 	"Comment": "Input scan file in <AnalysisDir>/<InputScanFile>",
@@ -133,7 +144,7 @@
 	 {
 	 "Comment": "Input graphs file in <AnalysisDir>/<Luminometer>/graphs", 
 	 "Comment": "If InputGraphsFile parameter empty, the graphs/graphs_Fill_Corr.pkl will be chosen",
-	 "InputGraphsFile" : "graphs/graphs_6868_noCorr.pkl",
+	 "InputGraphsFile" : "graphs/graphs_6868_OrbitDrift.pkl",
 	 "FitName" : "SG",
 	 "FitNumber" : "1",
          "FitConfigFile" : "fits/SG_Config.json",
